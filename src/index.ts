@@ -7,8 +7,8 @@ export default class TextOutputPlugin {
      * Base Plugin Details (Eventually implemented into a GUI in settings)
      */
     public name: string = 'Text Output';
-    public description: string = 'A plugin to output song information to a text file.';
-    public version: string = '0.0.1';
+    public description: string = 'A plugin to output currently playing song information to a text file.';
+    public version: string = '1.0.0';
     public author: string = 'Chase Ingebritson';
     public fileName: string = 'textOutput.txt'
     public template: string = `$$t - $$a [$$l]`

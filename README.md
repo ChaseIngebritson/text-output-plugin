@@ -24,7 +24,7 @@ To install the plugin -
 
 The plugin comes with a few default settings that can be modified to adjust the output.
 
-| Header 1 | Header 2 | Header 3 |
+| Name | Description | Default |
 | --- | --- | --------- |
 | name | The name of the plugin. | "Text Output" |
 | description | A description of the plugin. | "A plugin to output currently playing song information to a text file." |

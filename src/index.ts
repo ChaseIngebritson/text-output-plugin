@@ -1,6 +1,4 @@
-import * as electron from 'electron';
 import * as fs from 'fs';
-import { resolve } from 'path';
 
 export default class TextOutputPlugin {
     /**
@@ -10,7 +8,7 @@ export default class TextOutputPlugin {
     public description: string = 'A plugin to output currently playing song information to a text file.';
     public version: string = '1.0.0';
     public author: string = 'Chase Ingebritson';
-    public fileName: string = 'textOutput.txt'
+    public fileName: string = 'output.txt'
     public template: string = `$$t - $$a [$$l]`
     public fields = [
         { key: 'name', placeholder: '$$t' },
@@ -22,26 +20,21 @@ export default class TextOutputPlugin {
     /**
      * Private variables for interaction in plugins
      */
-    private _win: any;
-    private _app: any;
-    private _store: any;
-    private _pluginPath = resolve(electron.app.getPath('userData'), `./plugins/text-output`);
+    private env
 
     /**
      * Runs on plugin load (Currently run on application start)
      */
-    constructor(app: any, store: any) {
-        this._app = app;
-        this._store = store
+    constructor(env) {
+        this.env = env
+
         console.debug(`[Plugin][${this.name}] Loading Complete.`)
     }
 
     /**
      * Runs on app ready
      */
-    async onReady(win: any): Promise<void> {
-        this._win = win;
-        
+    async onReady(): Promise<void> {
         await this.assureOutputFileExists()
         console.debug(`[Plugin][${this.name}] Ready.`)
     }
@@ -77,8 +70,8 @@ export default class TextOutputPlugin {
      */
     private async assureOutputFileExists(): Promise<void> {
         try {
-            await fs.promises.mkdir(this._pluginPath, { recursive: true })
-            await fs.promises.open(`${this._pluginPath}/${this.fileName}`, 'w')
+            await fs.promises.mkdir(this.env.dir, { recursive: true })
+            await fs.promises.open(`${this.env.dir}/${this.fileName}`, 'w')
         } catch (err) {
             console.error(`[Plugin][${this.name}]`, err)
         }
@@ -106,7 +99,7 @@ export default class TextOutputPlugin {
      * @private
      */
     private async updateOutputFile(input: string): Promise<void> {
-        await fs.promises.writeFile(`${this._pluginPath}/${this.fileName}`, input)
+        await fs.promises.writeFile(`${this.env.dir}/${this.fileName}`, input)
             .catch(err => console.error(`[Plugin][${this.name}]`, err))
     }
 }
